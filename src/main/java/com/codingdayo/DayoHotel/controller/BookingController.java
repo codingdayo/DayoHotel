@@ -1,0 +1,55 @@
+package com.codingdayo.DayoHotel.controller;
+
+import com.codingdayo.DayoHotel.dto.Response;
+import com.codingdayo.DayoHotel.entity.Booking;
+import com.codingdayo.DayoHotel.service.interfac.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/bookings")
+public class BookingController {
+
+    @Autowired
+    private BookingService bookingService;
+
+
+
+    @PostMapping("/book-room/{roomId}/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<Response> saveBookings(@PathVariable Long roomId,
+                                                 @PathVariable Long userId,
+                                                 @RequestBody Booking bookingRequest){
+        Response response = new Response();
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+    }
+
+    @GetMapping("/all-bookings")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Response> getAllBookings() {
+        Response response = bookingService.getAllBookings();
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+
+    }
+
+    @GetMapping("/get-by-code/{confirmationCode}")
+
+    public ResponseEntity<Response> getBookingByConfirmationCode(@PathVariable String confirmationCode) {
+        Response response = bookingService.findBookingByConfirmationCode(confirmationCode);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+
+    }
+
+    @DeleteMapping("/cancel/{bookingId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<Response> cancelBooking(@PathVariable Long bookingId) {
+        Response response = bookingService.cancelBooking(bookingId);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
+
+    }
+
+
+}
