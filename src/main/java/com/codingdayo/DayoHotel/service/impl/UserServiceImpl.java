@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         Response response = new Response();
 
         try{
-             userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new OurException("Room Not Found"));
+             userRepository.findById(Long.valueOf(userId)).orElseThrow(() -> new OurException("User Not Found"));
             userRepository.deleteById(Long.valueOf(userId));
             response.setStatusCode(200);
             response.setMessage("Successful");

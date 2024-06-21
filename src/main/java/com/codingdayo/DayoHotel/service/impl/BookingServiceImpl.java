@@ -56,6 +56,8 @@ public class BookingServiceImpl implements BookingService {
             bookingRequest.setRoom(room);
             bookingRequest.setUser(user);
             String bookingConfirmationCode = Utils.generateConfirmationCode(10);
+            //missed the setting of BCcode, reason why it didn't save to the db
+            bookingRequest.setBookingConfirmationCode(bookingConfirmationCode);
             bookingRepository.save(bookingRequest);
             response.setStatusCode(200);
             response.setMessage("Successful");
@@ -80,7 +82,9 @@ public class BookingServiceImpl implements BookingService {
 
         try {
             Booking booking = bookingRepository.findByBookingConfirmationCode(confirmationCode).orElseThrow(() -> new OurException("Booking not found"));
-            BookingDTO bookingDTO = Utils.mapBookingEntityToBookingDTO(booking);
+            //changed this to return roles and users; map the user with 'true'
+            //BookingDTO bookingDTO = Utils.mapBookingEntityToBookingDTO(booking);
+            BookingDTO bookingDTO = Utils.mapBookingEntityToBookingDTOPlusBookedRoom(booking, true);
             response.setStatusCode(200);
             response.setMessage("Successful");
             response.setBooking(bookingDTO);
@@ -104,6 +108,7 @@ public class BookingServiceImpl implements BookingService {
 
         try {
             List<Booking> booking = bookingRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+            //changed this to return roles and users
             List<BookingDTO> bookingDTOList = Utils.mapBookingListEntityToBookingListDTO(booking);
             response.setStatusCode(200);
             response.setMessage("Successful");

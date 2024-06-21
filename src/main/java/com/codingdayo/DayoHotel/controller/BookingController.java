@@ -23,11 +23,11 @@ public class BookingController {
     public ResponseEntity<Response> saveBookings(@PathVariable Long roomId,
                                                  @PathVariable Long userId,
                                                  @RequestBody Booking bookingRequest){
-        Response response = new Response();
+        Response response = bookingService.saveBooking(roomId, userId, bookingRequest);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
-    @GetMapping("/all-bookings")
+    @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Response> getAllBookings() {
         Response response = bookingService.getAllBookings();

@@ -33,6 +33,7 @@ public class  Room {
                 "id=" + id +
                 ", roomType='" + roomType + '\'' +
                 ", roomPrice=" + roomPrice +
+
                 ", roomDescription='" + roomDescription + '\'' +
 
                 '}';

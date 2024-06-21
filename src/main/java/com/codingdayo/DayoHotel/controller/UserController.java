@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/get-history/{userId}")
     public ResponseEntity<Response> getUserBookingHistory(@PathVariable("userId") String userId){
-        Response response = userService.getUserBookingHistory( userId);
+        Response response = userService.getUserBookingHistory(userId);
         return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
